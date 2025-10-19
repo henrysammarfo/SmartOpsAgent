@@ -1,0 +1,256 @@
+import type {
+  Metric,
+  Alert,
+  Deployment,
+  Incident,
+  SecurityScan,
+  Web3Network,
+  ActivityItem,
+  ChartDataPoint,
+} from "./types"
+
+export const mockMetrics: Metric[] = [
+  {
+    id: "1",
+    label: "Total Requests",
+    value: "2.4M",
+    change: 12.5,
+    trend: "up",
+    status: "healthy",
+  },
+  {
+    id: "2",
+    label: "Avg Response Time",
+    value: "245ms",
+    change: -8.2,
+    trend: "down",
+    status: "healthy",
+  },
+  {
+    id: "3",
+    label: "Error Rate",
+    value: "0.12%",
+    change: 15.3,
+    trend: "up",
+    status: "warning",
+  },
+  {
+    id: "4",
+    label: "Active Servers",
+    value: 24,
+    change: 0,
+    trend: "stable",
+    status: "healthy",
+  },
+  {
+    id: "5",
+    label: "CPU Usage",
+    value: "68%",
+    change: 5.2,
+    trend: "up",
+    status: "warning",
+  },
+  {
+    id: "6",
+    label: "Memory Usage",
+    value: "12.4GB",
+    change: 3.1,
+    trend: "up",
+    status: "healthy",
+  },
+]
+
+export const mockChartData: ChartDataPoint[] = Array.from({ length: 24 }, (_, i) => ({
+  timestamp: `${i}:00`,
+  value: Math.floor(Math.random() * 1000) + 500,
+  label: `Hour ${i}`,
+}))
+
+export const mockAlerts: Alert[] = [
+  {
+    id: "1",
+    title: "High CPU Usage Detected",
+    message: "Server us-east-1-prod-03 CPU usage exceeded 85% threshold",
+    severity: "warning",
+    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+    source: "Infrastructure Monitor",
+    acknowledged: false,
+  },
+  {
+    id: "2",
+    title: "Deployment Failed",
+    message: "Production deployment v2.4.1 failed during health check",
+    severity: "error",
+    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
+    source: "CI/CD Pipeline",
+    acknowledged: false,
+  },
+  {
+    id: "3",
+    title: "Security Vulnerability Found",
+    message: "Critical vulnerability detected in dependency @package/core",
+    severity: "critical",
+    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+    source: "Security Scanner",
+    acknowledged: true,
+  },
+  {
+    id: "4",
+    title: "Database Connection Pool Low",
+    message: "Available connections dropped below 20%",
+    severity: "warning",
+    timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+    source: "Database Monitor",
+    acknowledged: false,
+  },
+]
+
+export const mockDeployments: Deployment[] = [
+  {
+    id: "1",
+    name: "smartops-api",
+    environment: "production",
+    status: "success",
+    branch: "main",
+    commit: "a3f2b1c",
+    author: "Sarah Chen",
+    timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
+    duration: "3m 24s",
+  },
+  {
+    id: "2",
+    name: "smartops-frontend",
+    environment: "production",
+    status: "success",
+    branch: "main",
+    commit: "b7e4d2a",
+    author: "Mike Johnson",
+    timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
+    duration: "2m 18s",
+  },
+  {
+    id: "3",
+    name: "smartops-worker",
+    environment: "staging",
+    status: "running",
+    branch: "develop",
+    commit: "c9a1f3e",
+    author: "Alex Kim",
+    timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+    duration: "1m 42s",
+  },
+  {
+    id: "4",
+    name: "smartops-api",
+    environment: "staging",
+    status: "failed",
+    branch: "feature/auth",
+    commit: "d2b8e4f",
+    author: "Emma Davis",
+    timestamp: new Date(Date.now() - 1000 * 60 * 40).toISOString(),
+    duration: "4m 12s",
+  },
+]
+
+export const mockIncidents: Incident[] = [
+  {
+    id: "1",
+    title: "API Gateway Timeout",
+    description: "Multiple timeout errors reported on API gateway",
+    severity: "critical",
+    status: "investigating",
+    timestamp: new Date(Date.now() - 1000 * 60 * 20).toISOString(),
+    assignee: "DevOps Team",
+    affectedServices: ["API Gateway", "Auth Service", "User Service"],
+  },
+  {
+    id: "2",
+    title: "Database Replication Lag",
+    description: "Replica database showing 30s replication lag",
+    severity: "warning",
+    status: "open",
+    timestamp: new Date(Date.now() - 1000 * 60 * 35).toISOString(),
+    assignee: "Database Team",
+    affectedServices: ["PostgreSQL Replica"],
+  },
+]
+
+export const mockSecurityScans: SecurityScan[] = [
+  {
+    id: "1",
+    type: "vulnerability",
+    severity: "critical",
+    title: "SQL Injection Vulnerability",
+    description: "Potential SQL injection in user input validation",
+    timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
+    status: "open",
+  },
+  {
+    id: "2",
+    type: "compliance",
+    severity: "warning",
+    title: "Missing Security Headers",
+    description: "CSP and X-Frame-Options headers not configured",
+    timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+    status: "fixed",
+  },
+]
+
+export const mockWeb3Networks: Web3Network[] = [
+  {
+    id: "1",
+    name: "Ethereum Mainnet",
+    status: "healthy",
+    blockNumber: 18234567,
+    gasPrice: "25 Gwei",
+    tps: 15,
+    contracts: 42,
+  },
+  {
+    id: "2",
+    name: "Polygon",
+    status: "healthy",
+    blockNumber: 48567234,
+    gasPrice: "30 Gwei",
+    tps: 65,
+    contracts: 18,
+  },
+]
+
+export const mockActivity: ActivityItem[] = [
+  {
+    id: "1",
+    type: "deployment",
+    title: "Deployment Completed",
+    description: "smartops-api deployed to production",
+    timestamp: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
+    user: "Sarah Chen",
+    status: "healthy",
+  },
+  {
+    id: "2",
+    type: "alert",
+    title: "High CPU Alert",
+    description: "CPU usage exceeded threshold on server 03",
+    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
+    status: "warning",
+  },
+  {
+    id: "3",
+    type: "incident",
+    title: "Incident Created",
+    description: "API Gateway Timeout incident opened",
+    timestamp: new Date(Date.now() - 1000 * 60 * 20).toISOString(),
+    user: "System",
+    status: "critical",
+  },
+  {
+    id: "4",
+    type: "security",
+    title: "Security Scan Completed",
+    description: "Weekly vulnerability scan finished",
+    timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
+    user: "Security Bot",
+    status: "healthy",
+  },
+]

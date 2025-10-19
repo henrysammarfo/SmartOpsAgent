@@ -1,0 +1,72 @@
+{
+  "name": "smartops-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered DevOps monitoring dashboard with ADK-TS agents for Web3 infrastructure",
+  "keywords": [
+    "devops",
+    "monitoring",
+    "adk-ts",
+    "web3",
+    "ethereum",
+    "polygon",
+    "ai-agents",
+    "nextjs",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/henrysammarfo/smartops-agent.git"
+  },
+  "license": "MIT",
+  "author": "Henry Sammarfo",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch": "latest",
+    "@aws-sdk/client-ec2": "latest",
+    "@aws-sdk/client-lambda": "latest",
+    "@aws-sdk/client-rds": "latest",
+    "@aws-sdk/client-s3": "latest",
+    "@octokit/rest": "latest",
+    "@pontus-devoteam/adk": "latest",
+    "@supabase/ssr": "latest",
+    "@supabase/supabase-js": "latest",
+    "@vercel/analytics": "^1.4.1",
+    "bufferutil": "latest",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cors": "latest",
+    "date-fns": "latest",
+    "dotenv": "latest",
+    "ethers": "latest",
+    "express": "latest",
+    "lucide-react": "^0.454.0",
+    "next": "15.2.4",
+    "next-themes": "latest",
+    "os": "latest",
+    "react": "^19",
+    "react-dom": "^19",
+    "recharts": "latest",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "tw-animate-css": "latest",
+    "utf-8-validate": "latest",
+    "ws": "latest",
+    "zod": "4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^8",
+    "eslint-config-next": "15.1.6",
+    "postcss": "^8.5",
+    "tailwindcss": "^4.1.9",
+    "typescript": "^5"
+  }
+}
