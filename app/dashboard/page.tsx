@@ -37,7 +37,7 @@ export default function DashboardPage() {
         // Generate chart data from metrics
         const now = Date.now()
         const generatedChartData = Array.from({ length: 24 }, (_, i) => ({
-          time: new Date(now - (23 - i) * 3600000).toISOString(),
+          timestamp: new Date(now - (23 - i) * 3600000).toISOString(),
           value: Math.random() * 100,
         }))
         setChartData(generatedChartData)
