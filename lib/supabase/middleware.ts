@@ -7,8 +7,8 @@ export async function updateSession(request: NextRequest) {
   })
 
   const supabase = createServerClient(
-    process.env.SUPABASE_SUPABASE_NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_NEXT_PUBLIC_SUPABASE_ANON_KEY_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
@@ -29,16 +29,20 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard") && !request.nextUrl.pathname.startsWith("/auth")) {
+  const pathname = request.nextUrl.pathname
+  const isAuthPage = pathname.startsWith("/auth/")
+  const isPublicPage = pathname === "/" || pathname.startsWith("/_next") || pathname.startsWith("/api")
+  const isDashboardPage = pathname.startsWith("/dashboard") || pathname.startsWith("/onboarding")
+
+  // Redirect to login if accessing protected pages without authentication
+  if (!user && isDashboardPage) {
     const url = request.nextUrl.clone()
     url.pathname = "/auth/login"
     return NextResponse.redirect(url)
   }
 
-  if (
-    user &&
-    (request.nextUrl.pathname.startsWith("/auth/login") || request.nextUrl.pathname.startsWith("/auth/sign-up"))
-  ) {
+  // Redirect to dashboard if already logged in and trying to access auth pages
+  if (user && isAuthPage) {
     const url = request.nextUrl.clone()
     url.pathname = "/dashboard"
     return NextResponse.redirect(url)

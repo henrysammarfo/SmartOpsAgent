@@ -1,4 +1,4 @@
-import { AgentBuilder } from "@pontus-devoteam/adk"
+import { AgentBuilder } from "@iqai/adk"
 import { z } from "zod"
 import { VercelMonitoringService } from "../services/vercel-service"
 import { SystemMonitoringService } from "../services/system-monitoring-service"
@@ -6,8 +6,7 @@ import { SystemMonitoringService } from "../services/system-monitoring-service"
 const vercelService = new VercelMonitoringService()
 const systemService = new SystemMonitoringService()
 
-export const infrastructureAgent = new AgentBuilder()
-  .withName("InfrastructureMonitoringAgent")
+export const infrastructureAgent = AgentBuilder.create("InfrastructureMonitoringAgent")
   .withDescription("Monitors infrastructure health, deployments, and system resources")
   .withModel("openai/gpt-4o-mini")
   .withTools([

@@ -1,11 +1,10 @@
-import { AgentBuilder } from "@pontus-devoteam/adk"
+import { AgentBuilder } from "@iqai/adk"
 import { z } from "zod"
 import { Web3Service } from "../services/web3-service"
 
 const web3Service = new Web3Service()
 
-export const web3Agent = new AgentBuilder()
-  .withName("Web3MonitoringAgent")
+export const web3Agent = AgentBuilder.create("Web3MonitoringAgent")
   .withDescription("Monitors Ethereum and Polygon networks, tracks gas prices, and analyzes blockchain health")
   .withModel("openai/gpt-4o-mini")
   .withTools([

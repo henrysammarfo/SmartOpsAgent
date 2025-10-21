@@ -1,11 +1,10 @@
-import { AgentBuilder } from "@pontus-devoteam/adk"
+import { AgentBuilder } from "@iqai/adk"
 import { z } from "zod"
 import { infrastructureAgent } from "./infrastructure-agent"
 import { web3Agent } from "./web3-agent"
 import { cicdAgent } from "./cicd-agent"
 
-export const orchestratorAgent = new AgentBuilder()
-  .withName("SmartOpsOrchestratorAgent")
+export const orchestratorAgent = AgentBuilder.create("SmartOpsOrchestratorAgent")
   .withDescription("Orchestrates multiple specialized agents to provide comprehensive DevOps monitoring and insights")
   .withModel("openai/gpt-4o")
   .withTools([

@@ -1,11 +1,10 @@
-import { AgentBuilder } from "@pontus-devoteam/adk"
+import { AgentBuilder } from "@iqai/adk"
 import { z } from "zod"
 import { GitHubService } from "../services/github-service"
 
 const githubService = new GitHubService()
 
-export const cicdAgent = new AgentBuilder()
-  .withName("CICDMonitoringAgent")
+export const cicdAgent = AgentBuilder.create("CICDMonitoringAgent")
   .withDescription("Monitors GitHub Actions workflows, analyzes pipeline health, and provides deployment insights")
   .withModel("openai/gpt-4o-mini")
   .withTools([

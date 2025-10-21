@@ -1,17 +1,18 @@
 import { Octokit } from "@octokit/rest"
 import type { Deployment, Pipeline, PipelineStage } from "../types"
+import { config } from "../config"
 
 export class GitHubService {
   private octokit: Octokit
   private owner: string
   private repo: string
 
-  constructor(token: string, owner: string, repo?: string) {
+  constructor(token?: string, owner?: string, repo?: string) {
     this.octokit = new Octokit({
-      auth: token,
+      auth: token || config.github.token,
     })
-    this.owner = owner
-    this.repo = repo || "default-repo"
+    this.owner = owner || config.github.owner
+    this.repo = repo || config.github.repo || "default-repo"
   }
 
   async getWorkflowRuns(): Promise<Deployment[]> {
