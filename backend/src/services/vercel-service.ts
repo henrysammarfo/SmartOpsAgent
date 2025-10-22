@@ -51,7 +51,7 @@ export class VercelMonitoringService {
     }
 
     try {
-      const data = await this.fetchVercel("/v9/projects")
+      const data = (await this.fetchVercel("/v9/projects")) as { projects?: VercelProject[] }
       return data.projects || []
     } catch (error) {
       console.error("Error fetching Vercel projects:", error)
@@ -65,7 +65,9 @@ export class VercelMonitoringService {
     }
 
     try {
-      const data = await this.fetchVercel(`/v6/deployments?limit=${limit}`)
+      const data = (await this.fetchVercel(`/v6/deployments?limit=${limit}`)) as {
+        deployments?: VercelDeployment[]
+      }
       return data.deployments || []
     } catch (error) {
       console.error("Error fetching Vercel deployments:", error)

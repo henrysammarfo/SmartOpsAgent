@@ -4,6 +4,7 @@ import { VercelMonitoringService } from "../services/vercel-service"
 import { SystemMonitoringService } from "../services/system-monitoring-service"
 import { GitHubService } from "../services/github-service"
 import { Web3Service } from "../services/web3-service"
+import type { AWSService } from "../types"
 
 const router = Router()
 
@@ -64,7 +65,7 @@ router.get("/infrastructure/services", async (req: any, res) => {
     const systemInfo = await systemService.getSystemInfo()
 
     // If user has Vercel token, fetch Vercel services
-    let vercelServices = []
+    let vercelServices: AWSService[] = []
     if (integrations.vercel_token) {
       const vercelService = new VercelMonitoringService(integrations.vercel_token)
       vercelServices = await vercelService.getAllServices()

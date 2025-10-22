@@ -12,6 +12,14 @@ export const config = {
     anonKey: process.env.SUPABASE_SUPABASE_NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
   },
 
+  // AWS Configuration (optional)
+  aws: {
+    enabled: process.env.AWS_ENABLED === "true",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+    region: process.env.AWS_REGION || "us-east-1",
+  },
+
   // Vercel Configuration (replaces AWS)
   vercel: {
     token: process.env.VERCEL_TOKEN || "",

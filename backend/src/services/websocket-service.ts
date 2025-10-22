@@ -5,6 +5,7 @@ import { GitHubService } from "./github-service"
 import { Web3Service } from "./web3-service"
 import { NotificationService } from "./notification-service"
 import { config } from "../config"
+import type { Alert } from "../types"
 
 export class WebSocketService {
   private wss: WebSocket.Server
@@ -25,6 +26,23 @@ export class WebSocketService {
 
     this.setupWebSocket()
     this.startDataStreaming()
+  }
+
+  private createAlert(
+    title: string,
+    message: string,
+    severity: "info" | "warning" | "error" | "critical",
+    source: string,
+  ): Alert {
+    return {
+      id: `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      title,
+      message,
+      severity,
+      timestamp: new Date().toISOString(),
+      source,
+      acknowledged: false,
+    }
   }
 
   private setupWebSocket() {
@@ -90,20 +108,24 @@ export class WebSocketService {
 
         for (const metric of metrics) {
           if (metric.name === "CPU Usage" && metric.value > 80) {
-            await this.notificationService.sendAlert({
-              title: "High CPU Usage Detected",
-              message: `CPU usage is at ${metric.value}%`,
-              severity: "critical",
-              source: "system-monitoring",
-            })
+            await this.notificationService.sendAlert(
+              this.createAlert(
+                "High CPU Usage Detected",
+                `CPU usage is at ${metric.value}%`,
+                "critical",
+                "system-monitoring",
+              ),
+            )
           }
           if (metric.name === "Memory Usage" && metric.value > 85) {
-            await this.notificationService.sendAlert({
-              title: "High Memory Usage Detected",
-              message: `Memory usage is at ${metric.value}%`,
-              severity: "warning",
-              source: "system-monitoring",
-            })
+            await this.notificationService.sendAlert(
+              this.createAlert(
+                "High Memory Usage Detected",
+                `Memory usage is at ${metric.value}%`,
+                "warning",
+                "system-monitoring",
+              ),
+            )
           }
         }
       } catch (error) {
@@ -122,12 +144,14 @@ export class WebSocketService {
 
         const failedDeployments = deployments.filter((d) => d.status === "failed")
         for (const deployment of failedDeployments) {
-          await this.notificationService.sendAlert({
-            title: "Deployment Failed",
-            message: `Deployment ${deployment.id} failed on branch ${deployment.branch}`,
-            severity: "error",
-            source: "github-actions",
-          })
+          await this.notificationService.sendAlert(
+            this.createAlert(
+              "Deployment Failed",
+              `Deployment ${deployment.id} failed on branch ${deployment.branch}`,
+              "error",
+              "github-actions",
+            ),
+          )
         }
       } catch (error) {
         console.error("Error streaming GitHub data:", error)
@@ -141,12 +165,14 @@ export class WebSocketService {
 
         for (const network of networks) {
           if (network.gasPrice.fast > 100) {
-            await this.notificationService.sendAlert({
-              title: `High Gas Price on ${network.name}`,
-              message: `Fast gas price is ${network.gasPrice.fast} Gwei`,
-              severity: "warning",
-              source: "web3-monitoring",
-            })
+            await this.notificationService.sendAlert(
+              this.createAlert(
+                `High Gas Price on ${network.name}`,
+                `Fast gas price is ${network.gasPrice.fast} Gwei`,
+                "warning",
+                "web3-monitoring",
+              ),
+            )
           }
         }
       } catch (error) {

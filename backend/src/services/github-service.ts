@@ -26,7 +26,7 @@ export class GitHubService {
       return data.workflow_runs.map((run) => ({
         id: run.id.toString(),
         name: run.name || "Unnamed Workflow",
-        status: this.mapGitHubStatus(run.status, run.conclusion),
+        status: this.mapGitHubStatus(run.status || "queued", run.conclusion || null),
         environment: run.head_branch || "unknown",
         branch: run.head_branch || "unknown",
         commit: run.head_sha.substring(0, 7),
@@ -63,7 +63,7 @@ export class GitHubService {
       const stages: PipelineStage[] = jobsData.jobs.map((job) => ({
         id: job.id.toString(),
         name: job.name,
-        status: this.mapGitHubStatus(job.status, job.conclusion),
+        status: this.mapGitHubStatus(job.status || "queued", job.conclusion || null),
         duration:
           job.completed_at && job.started_at
             ? Math.floor((new Date(job.completed_at).getTime() - new Date(job.started_at).getTime()) / 1000)
@@ -76,7 +76,7 @@ export class GitHubService {
         branch: run.head_branch || "unknown",
         commit: run.head_sha.substring(0, 7),
         author: run.actor?.login || "unknown",
-        status: this.mapGitHubStatus(run.status, run.conclusion),
+        status: this.mapGitHubStatus(run.status || "queued", run.conclusion || null),
         stages,
         timestamp: run.created_at,
       }

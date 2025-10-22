@@ -15,7 +15,8 @@ router.post("/agent/query", async (req, res) => {
       return res.status(400).json({ error: "Query is required" })
     }
 
-    const response = await orchestratorAgent.run(query)
+    const agent = await orchestratorAgent
+    const response = await agent.runner.ask(query)
     res.json({ response })
   } catch (error) {
     console.error("Agent query error:", error)
@@ -27,7 +28,8 @@ router.post("/agent/query", async (req, res) => {
 router.post("/agent/infrastructure", async (req, res) => {
   try {
     const { query } = req.body
-    const response = await infrastructureAgent.run(query || "Get current infrastructure status")
+    const agent = await infrastructureAgent
+    const response = await agent.runner.ask(query || "Get current infrastructure status")
     res.json({ response })
   } catch (error) {
     console.error("Infrastructure agent error:", error)
@@ -38,7 +40,8 @@ router.post("/agent/infrastructure", async (req, res) => {
 router.post("/agent/web3", async (req, res) => {
   try {
     const { query } = req.body
-    const response = await web3Agent.run(query || "Get current Web3 network status")
+    const agent = await web3Agent
+    const response = await agent.runner.ask(query || "Get current Web3 network status")
     res.json({ response })
   } catch (error) {
     console.error("Web3 agent error:", error)
@@ -49,7 +52,8 @@ router.post("/agent/web3", async (req, res) => {
 router.post("/agent/cicd", async (req, res) => {
   try {
     const { query } = req.body
-    const response = await cicdAgent.run(query || "Get current CI/CD pipeline status")
+    const agent = await cicdAgent
+    const response = await agent.runner.ask(query || "Get current CI/CD pipeline status")
     res.json({ response })
   } catch (error) {
     console.error("CICD agent error:", error)
