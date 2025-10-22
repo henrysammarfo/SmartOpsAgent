@@ -7,7 +7,7 @@ import { ChartWidget } from "@/components/dashboard/chart-widget"
 import { FilterBar } from "@/components/dashboard/filter-bar"
 import { AWSServiceGrid } from "@/components/dashboard/aws-service-grid"
 import { useWebSocket } from "@/hooks/use-websocket"
-import { apiClient } from "@/lib/api-client"
+import { useApiClient } from "@/hooks/use-api-client"
 import type { Metric, AWSService } from "@/lib/types"
 
 export default function InfrastructurePage() {
@@ -16,6 +16,7 @@ export default function InfrastructurePage() {
   const [chartData, setChartData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
+  const apiClient = useApiClient()
   const { subscribe } = useWebSocket({ autoConnect: true })
 
   useEffect(() => {

@@ -4,12 +4,14 @@ import { useEffect, useState } from "react"
 import { MainLayout } from "@/components/layout/main-layout"
 import { AlertsPanel } from "@/components/dashboard/alerts-panel"
 import { FilterBar } from "@/components/dashboard/filter-bar"
-import { apiClient } from "@/lib/api-client"
+import { useApiClient } from "@/hooks/use-api-client"
 import type { Alert } from "@/lib/types"
 
 export default function IncidentsPage() {
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
+
+  const apiClient = useApiClient()
 
   useEffect(() => {
     const fetchAlerts = async () => {

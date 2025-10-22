@@ -9,7 +9,7 @@ import { ActivityFeed } from "@/components/dashboard/activity-feed"
 import { DeploymentList } from "@/components/dashboard/deployment-list"
 import { FilterBar } from "@/components/dashboard/filter-bar"
 import { useWebSocket } from "@/hooks/use-websocket"
-import { apiClient } from "@/lib/api-client"
+import { useApiClient } from "@/hooks/use-api-client"
 import type { Metric, Alert, ActivityItem, Deployment } from "@/lib/types"
 
 export default function DashboardPage() {
@@ -20,6 +20,7 @@ export default function DashboardPage() {
   const [chartData, setChartData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
+  const apiClient = useApiClient()
   const { subscribe } = useWebSocket({ autoConnect: true })
 
   useEffect(() => {

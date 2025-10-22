@@ -7,7 +7,7 @@ import { ChartWidget } from "@/components/dashboard/chart-widget"
 import { FilterBar } from "@/components/dashboard/filter-bar"
 import { Web3NetworkCards } from "@/components/dashboard/web3-network-cards"
 import { useWebSocket } from "@/hooks/use-websocket"
-import { apiClient } from "@/lib/api-client"
+import { useApiClient } from "@/hooks/use-api-client"
 import type { Web3Network } from "@/lib/types"
 
 export default function Web3Page() {
@@ -15,6 +15,7 @@ export default function Web3Page() {
   const [chartData, setChartData] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
+  const apiClient = useApiClient()
   const { subscribe } = useWebSocket({ autoConnect: true })
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function Web3Page() {
         // Generate chart data
         const now = Date.now()
         const generatedChartData = Array.from({ length: 24 }, (_, i) => ({
-          time: new Date(now - (23 - i) * 3600000).toISOString(),
+          timestamp: new Date(now - (23 - i) * 3600000).toISOString(),
           value: Math.random() * 100,
         }))
         setChartData(generatedChartData)
