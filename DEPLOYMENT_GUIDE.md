@@ -1,455 +1,320 @@
-# SmartOpsAgent Deployment Guide
+# 🚀 SmartOpsAgent - Quick Deployment Guide
 
-Complete step-by-step guide to deploy SmartOpsAgent Dashboard for hackathon judging.
-
-## Prerequisites
-
-- Node.js 22+ installed locally
-- Git installed
-- Vercel account (free tier)
-- Railway/Render account (free tier) for backend
-- Supabase account (free tier)
-- API keys from services listed below
+**For Hackathon Judges - Complete Setup in 30 Minutes**
 
 ---
 
-## Part 1: Local Development Setup
+## ⚡ Quick Start (For Testing Locally RIGHT NOW)
 
-### Step 1: Clone and Install Dependencies
+### 1. Create Demo Account in Supabase (5 minutes)
 
-```bash
-# Navigate to project
-cd SmartOpsAgent
+1. Go to [https://supabase.com/dashboard/project/wdmeqwveedkxiuzbalfq/auth/users](https://supabase.com/dashboard/project/wdmeqwveedkxiuzbalfq/auth/users)
 
-# Install frontend dependencies
-npm install
+2. Click "Add user" → "Create new user"
 
-# Install backend dependencies
-cd backend
-npm install
-cd ..
-```
+3. Enter:
+   - Email: `demo@smartopsagent.com`
+   - Password: `DemoPass2025!`
 
-### Step 2: Configure Frontend Environment
+4. Click "Create user"
 
-Create `.env.local` in the root directory:
+5. **IMPORTANT:** Copy the User UUID (it looks like `a1b2c3d4-e5f6-...`)
 
-```bash
-# API Configuration
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
-NEXT_PUBLIC_WS_URL=ws://localhost:3002
+### 2. Add API Keys to Demo Account (5 minutes)
 
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkbWVxd3ZlZWRreGl1emJhbGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc0ODM1MzgsImV4cCI6MjA1MzA1OTUzOH0.CPIyqBuRs61S2aIXGh_q5F5sLDxSvqHSVSy8-a1CG_I
-```
+1. Go to [Supabase SQL Editor](https://supabase.com/dashboard/project/wdmeqwveedkxiuzbalfq/sql/new)
 
-### Step 3: Configure Backend Environment
+2. Open the file `DEMO_SETUP.sql` (in your project root)
 
-Create `backend/.env`:
+3. Find the line: `'YOUR_DEMO_USER_ID'` (appears 11 times)
 
-```bash
-# Server Configuration
-PORT=3001
-WS_PORT=3002
+4. Replace ALL `'YOUR_DEMO_USER_ID'` with your actual UUID from Step 1.5
+   - Example: Replace `'YOUR_DEMO_USER_ID'` with `'a1b2c3d4-e5f6-7890-abcd-123456789abc'`
 
-# Database URL (use your Supabase PostgreSQL connection string)
-DATABASE_URL=postgresql://postgres.wdmeqwveedkxiuzbalfq:[YOUR_PASSWORD]@aws-0-us-west-1.pooler.supabase.com:6543/postgres
+5. Copy the ENTIRE updated SQL script
 
-# Supabase Configuration
-SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
-SUPABASE_SERVICE_KEY=[YOUR_SUPABASE_SERVICE_KEY]
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkbWVxd3ZlZWRreGl1emJhbGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc0ODM1MzgsImV4cCI6MjA1MzA1OTUzOH0.CPIyqBuRs61S2aIXGh_q5F5sLDxSvqHSVSy8-a1CG_I
+6. Paste into Supabase SQL Editor
 
-# OpenAI API Key (for AI agents)
-OPENAI_API_KEY=[YOUR_OPENAI_API_KEY]
+7. Click "Run" (bottom right)
 
-# AWS Configuration (optional - will show mock data if not configured)
-AWS_ENABLED=false
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_REGION=us-east-1
+8. **Verify:** You should see 5 rows in the result:
+   ```
+   github    | active
+   vercel    | active
+   alchemy   | active
+   discord   | active
+   slack     | active
+   ```
 
-# Notification Webhooks (optional for demo)
-DISCORD_WEBHOOK_URL=
-SLACK_WEBHOOK_URL=
+### 3. Test Locally (2 minutes)
 
-# GitHub Configuration (optional for demo - will use mock data if not configured)
-GITHUB_TOKEN=
-GITHUB_OWNER=
-GITHUB_REPO=
+1. Open your browser: `http://localhost:3000`
 
-# Vercel Configuration (optional for demo)
-VERCEL_TOKEN=
-VERCEL_TEAM_ID=
+2. Click "Login"
 
-# Web3 RPC URLs (uses public Alchemy endpoints if not configured)
-ETHEREUM_RPC_URL=
-POLYGON_RPC_URL=
-```
+3. Enter:
+   - Email: `demo@smartopsagent.com`
+   - Password: `DemoPass2025!`
 
-###  Step 4: Build Backend
-
-```bash
-cd backend
-npm run build
-cd ..
-```
-
-### Step 5: Test Locally
-
-Open 3 terminal windows:
-
-**Terminal 1 - Backend:**
-```bash
-cd backend
-npm start
-```
-
-**Terminal 2 - WebSocket (not needed for basic testing, backend handles it):**
-```bash
-# WebSocket server starts automatically with backend
-```
-
-**Terminal 3 - Frontend:**
-```bash
-npm run dev
-```
-
-Visit `http://localhost:3000` and test:
-- Sign up with test email
-- Login works
-- Dashboard loads without errors
-- No console errors in browser DevTools
+4. **You should now see the dashboard with LIVE DATA!** ✅
+   - GitHub workflows from SmartOpsAgent repo
+   - System metrics updating in real-time
+   - Web3 data from Ethereum/Polygon
+   - Green "Live" badge in top right
 
 ---
 
-## Part 2: Supabase Database Setup
+## 🌐 Production Deployment (For Judges to Access)
 
-### Step 1: Get Supabase Credentials
+### Part 1: Deploy Backend to Railway (10 minutes)
 
-1. Go to [https://supabase.com/dashboard](https://supabase.com/dashboard)
-2. Select your project (or create new one)
-3. Go to **Settings** > **API**
-4. Copy:
-   - Project URL
-   - `anon` `public` key
-   - `service_role` `secret` key
-5. Go to **Settings** > **Database**
-6. Copy the PostgreSQL connection string
+1. **Create Railway Account**
+   - Go to [https://railway.app](https://railway.app)
+   - Click "Login with GitHub"
 
-### Step 2: Create Demo User
+2. **Create New Project**
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Choose `SmartOpsAgent` repository
+   - Railway auto-detects the project
 
-1. Go to **Authentication** > **Users**
-2. Click "Add user" > "Create new user"
-3. Email: `demo@smartopsagent.com`
-4. Password: `DemoPass2025!`
-5. Click "Create user"
-6. **Copy the User UUID** - you'll need this for Step 3
+3. **Configure Service**
+   - Click on the created service
+   - Go to "Settings"
+   - Set:
+     - **Root Directory**: `backend`
+     - **Build Command**: `npm run build`
+     - **Start Command**: `npm start`
 
-### Step 3: Add Demo User API Keys
+4. **Add Environment Variables**
+   - Click "Variables" tab
+   - Click "Add Variable" and paste ALL these (copy from `backend/.env`):
 
-1. Go to **SQL Editor**
-2. Create a new query
-3. Paste the contents of `DEMO_SETUP.sql`
-4. Replace `YOUR_DEMO_USER_ID` with the UUID from Step 2
-5. Replace placeholders with real API keys:
-   - `YOUR_GITHUB_TOKEN` - Get from [github.com/settings/tokens](https://github.com/settings/tokens) with `repo`, `workflow` scopes
-   - `YOUR_VERCEL_TOKEN` - Get from [vercel.com/account/tokens](https://vercel.com/account/tokens)
-   - `YOUR_ALCHEMY_API_KEY` - Get from [alchemy.com/dashboard](https://alchemy.com/dashboard)
-   - `YOUR_DISCORD_WEBHOOK_URL` - Discord Server > Settings > Integrations > Webhooks
-   - `YOUR_SLACK_WEBHOOK_URL` - [api.slack.com/apps](https://api.slack.com/apps) > Create app > Incoming Webhooks
-6. Run the query
+   ```bash
+   PORT=3001
+   WS_PORT=3002
+   NODE_ENV=production
+   SUPABASE_SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
+   SUPABASE_SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkbWVxd3ZlZWRreGl1emJhbGZxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MDg1NjUzMiwiZXhwIjoyMDc2NDMyNTMyfQ.iWdv8YyZZSqISVws2O7JNaeZAu-9ZyfX31rBGZiekfA
+   SUPABASE_NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkbWVxd3ZlZWRreGl1emJhbGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NTY1MzIsImV4cCI6MjA3NjQzMjUzMn0.kqaV0EoTs8GrU9ky9sEULIRH-8tiwbTd7O6K-Z3j2so
+   VERCEL_TOKEN=4slQcSIPl7c8DuCvnhRnapO6
+   GITHUB_TOKEN=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
+   GITHUB_OWNER=henrysammarfo
+   GITHUB_REPO=SmartOpsAgent
+   ETHEREUM_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/MXRg6nCI-AMjLmMDXUqXUh
+   POLYGON_RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/VBXJLqmo9-wWdLYDKLNEXp
+   OPENAI_API_KEY=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
+   AI_MODEL=gpt-4-turbo-preview
+   DATABASE_URL=postgresql://neondb_owner:npg_GmRO9NxBnju8@ep-misty-field-abdu6nc3-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+   DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/1429478189922652260/VhsWrbu8ZzMaUtWrT1U3Z1I1PHdrBZklJZrG_Por_O9SvM1GxsYmTSk2UUGlh7315YnK
+   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/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
+   ```
 
-The demo account now has real API integrations configured!
+5. **Deploy**
+   - Click "Deploy"
+   - Wait 2-3 minutes for build to complete
 
----
+6. **Get Your Backend URL**
+   - Click "Settings" > "Domains"
+   - Copy the URL (e.g., `https://smartopsagent-production-abc123.up.railway.app`)
+   - **SAVE THIS URL** - you'll need it for frontend!
 
-## Part 3: Backend Deployment (Railway)
+### Part 2: Deploy Frontend to Vercel (5 minutes)
 
-### Step 1: Deploy to Railway
+1. **Update Environment Variables**
 
-1. Go to [railway.app](https://railway.app)
-2. Click "New Project" > "Deploy from GitHub repo"
-3. Connect your GitHub account
-4. Select `SmartOpsAgent` repository
-5. Railway will auto-detect Node.js
+   Edit `.env.local` in your project root:
 
-### Step 2: Configure Build Settings
+   ```bash
+   # Replace with YOUR Railway backend URL from Part 1, Step 6
+   NEXT_PUBLIC_API_URL=https://YOUR_RAILWAY_URL.up.railway.app/api
+   NEXT_PUBLIC_WS_URL=wss://YOUR_RAILWAY_URL.up.railway.app
 
-1. Click on the service
-2. Go to **Settings**
-3. Set **Root Directory**: `backend`
-4. Set **Build Command**: `npm run build`
-5. Set **Start Command**: `npm start`
+   # Keep these the same
+   NEXT_PUBLIC_SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkbWVxd3ZlZWRreGl1emJhbGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NTY1MzIsImV4cCI6MjA3NjQzMjUzMn0.kqaV0EoTs8GrU9ky9sEULIRH-8tiwbTd7O6K-Z3j2so
+   ```
 
-### Step 3: Add Environment Variables
+2. **Deploy to Vercel**
 
-Go to **Variables** tab and add all variables from `backend/.env`:
+   ```bash
+   # Install Vercel CLI (if not installed)
+   npm install -g vercel
 
-Required variables:
-```
-PORT=3001
-WS_PORT=3002
-DATABASE_URL=[Your Supabase PostgreSQL URL]
-SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
-SUPABASE_SERVICE_KEY=[Your service key]
-SUPABASE_ANON_KEY=[Your anon key]
-OPENAI_API_KEY=[Your OpenAI key]
-```
+   # Login
+   vercel login
 
-Optional (for full functionality):
-```
-GITHUB_TOKEN=[GitHub token]
-GITHUB_OWNER=[Your GitHub username]
-GITHUB_REPO=[Repo name]
-VERCEL_TOKEN=[Vercel token]
-VERCEL_TEAM_ID=[Team ID]
-DISCORD_WEBHOOK_URL=[Discord webhook]
-SLACK_WEBHOOK_URL=[Slack webhook]
-```
+   # Deploy to production
+   vercel --prod
+   ```
 
-### Step 4: Deploy and Get URL
+3. **Add Environment Variables in Vercel**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Select your project
+   - Click "Settings" > "Environment Variables"
+   - Add the 4 variables from `.env.local` above
 
-1. Click "Deploy"
-2. Wait for build to complete (2-3 minutes)
-3. Copy the deployment URL (e.g., `https://smartopsagent-backend.up.railway.app`)
-4. **Important**: Note this URL for frontend configuration
-
----
-
-## Part 4: Frontend Deployment (Vercel)
-
-### Step 1: Update Environment for Production
-
-Update `.env.local` with production URLs:
-
-```bash
-# Production API URLs (replace with your Railway URL)
-NEXT_PUBLIC_API_URL=https://smartopsagent-backend.up.railway.app/api
-NEXT_PUBLIC_WS_URL=wss://smartopsagent-backend.up.railway.app
-
-# Supabase (same as before)
-NEXT_PUBLIC_SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
-
-### Step 2: Deploy to Vercel
-
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Login to Vercel
-vercel login
-
-# Deploy
-vercel --prod
-```
-
-OR use Vercel Dashboard:
-
-1. Go to [vercel.com/dashboard](https://vercel.com/dashboard)
-2. Click "Add New" > "Project"
-3. Import `SmartOpsAgent` from GitHub
-4. Vercel auto-detects Next.js
-5. Click "Deploy"
-
-### Step 3: Add Environment Variables in Vercel
-
-1. Go to your project in Vercel Dashboard
-2. Click "Settings" > "Environment Variables"
-3. Add each variable:
-   - `NEXT_PUBLIC_API_URL` = `https://smartopsagent-backend.up.railway.app/api`
-   - `NEXT_PUBLIC_WS_URL` = `wss://smartopsagent-backend.up.railway.app`
-   - `NEXT_PUBLIC_SUPABASE_URL` = `https://wdmeqwveedkxiuzbalfq.supabase.co`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
-4. Redeploy after adding variables
-
-### Step 4: Get Deployment URL
-
-Vercel provides a URL like: `https://smart-ops-agent.vercel.app`
+4. **Get Your Frontend URL**
+   - Vercel gives you a URL like: `https://smart-ops-agent.vercel.app`
+   - **This is your DEMO LINK for judges!**
 
 ---
 
-## Part 5: Update Documentation
+## ✅ Final Testing Checklist
 
-### Update DEMO_CREDENTIALS.md
+Visit your Vercel URL and test:
 
-Edit `DEMO_CREDENTIALS.md` and replace placeholders:
-
-- Line 7: Replace with your Vercel deployment URL
-- Line 33: Replace with Discord server invite link (if applicable)
-- Line 124: Replace with demo video link
-- Line 125: Replace with GitHub repository URL
-- Line 126: Replace with Discord server link
-
----
-
-## Part 6: Final Verification Checklist
-
-Test the deployed application:
-
-### 1. Visit Deployment URL
-
-Go to your Vercel URL: `https://smart-ops-agent.vercel.app`
-
-- [ ] Page loads without errors
-- [ ] No console errors in browser DevTools
-- [ ] Sign up page works
-- [ ] Login page works
-
-### 2. Test Demo Account
-
-Login with:
-- Email: `demo@smartopsagent.com`
-- Password: `DemoPass2025!`
-
-Verify:
-- [ ] Login successful
-- [ ] Dashboard loads
-- [ ] Green "Live" badge appears (WebSocket connected)
+- [ ] Homepage loads
+- [ ] Click "Login"
+- [ ] Login with `demo@smartopsagent.com` / `DemoPass2025!`
+- [ ] Dashboard loads without errors
+- [ ] Green "Live" badge shows (top right)
 - [ ] System metrics update automatically
 - [ ] Charts render correctly
-
-### 3. Test Dashboard Pages
-
-Click through all pages:
-- [ ] Dashboard page loads with metrics
-- [ ] Infrastructure page shows services
-- [ ] Deployments page shows GitHub workflows (if configured)
-- [ ] Web3 page shows Ethereum/Polygon data
-- [ ] Incidents page shows alerts
-
-### 4. Test AI Agents
-
-Click "Ask AI" in top right:
-- [ ] Modal opens
-- [ ] Try query: "What is the current infrastructure health?"
-- [ ] AI agent responds
-- [ ] Response shows real data from services
-
-### 5. Test Real-time Updates
-
-- [ ] Leave dashboard open for 1 minute
-- [ ] Metrics update automatically
-- [ ] Timestamp changes
-- [ ] No connection errors
-
-### 6. Test Integration Data
-
-If you configured API keys in Supabase:
-- [ ] GitHub workflows appear (real data, not mock)
-- [ ] Vercel deployments appear
-- [ ] Ethereum gas prices match [etherscan.io](https://etherscan.io/gastracker)
-- [ ] Polygon data matches [polygonscan.com](https://polygonscan.com/gastracker)
+- [ ] Click through all pages: Dashboard, Infrastructure, Deployments, Web3, Incidents
+- [ ] Click "Ask AI" and test AI agent
+- [ ] No console errors in browser DevTools (F12)
 
 ---
 
-## Part 7: Troubleshooting
+## 📝 What to Give Judges
 
-### Backend Not Starting
+### 1. DEMO_CREDENTIALS.md
 
-1. Check Railway logs:
-   - Railway Dashboard > Select service > Deployments > View logs
-2. Common issues:
-   - Missing environment variables
-   - Invalid DATABASE_URL
-   - Port already in use (change PORT variable)
+Update [DEMO_CREDENTIALS.md](DEMO_CREDENTIALS.md) with:
+- Your Vercel deployment URL
+- Demo login credentials
 
-### Frontend Build Fails
+### 2. README.md
 
-1. Check Vercel deployment logs
-2. Common issues:
-   - Missing NEXT_PUBLIC_ environment variables
-   - TypeScript errors (run `npm run build` locally first)
-   - Wrong Node version (Vercel uses Node 20 by default)
+Create a README.md with:
+- Project description
+- Features list
+- Tech stack (**mention ADK-TS!**)
+- How to run locally
+- Demo video link
+- Live demo link
 
-### API Calls Failing
+### 3. Demo Video
 
-1. Check browser console for errors
-2. Common issues:
-   - Wrong NEXT_PUBLIC_API_URL (must end with `/api`)
-   - CORS errors (backend should allow all origins in development)
-   - Backend not deployed/running
+Record a 5-minute video showing:
+1. Homepage and signup/login
+2. Dashboard with live data
+3. All 5 pages working
+4. AI agents responding to queries
+5. Real-time updates
+6. **Show the code:** Open `backend/src/agents/` folder and mention ADK-TS integration
 
-### WebSocket Not Connecting
+---
 
-1. Green "Live" badge not showing
-2. Common issues:
-   - Wrong NEXT_PUBLIC_WS_URL (should be `wss://` for production)
-   - Backend WebSocket server not running
-   - Firewall blocking WebSocket connections
+## 🚨 Troubleshooting
+
+### Backend Not Starting on Railway
+
+- Check logs: Railway Dashboard > Deployments > View Logs
+- Common issue: Missing environment variables
+- Fix: Go to Variables tab and ensure all vars are added
+
+### Frontend Build Fails on Vercel
+
+- Check deployment logs in Vercel
+- Common issue: Missing NEXT_PUBLIC_ environment variables
+- Fix: Add all 4 environment variables in Vercel Settings
+
+### "Unauthorized" Error in Dashboard
+
+- Issue: Demo account has no API integrations
+- Fix: Run `DEMO_SETUP.sql` in Supabase (see Part 1, Step 2)
+
+### No Live Data Showing
+
+- Issue: API keys not configured properly
+- Fix: Verify `DEMO_SETUP.sql` was run successfully
+- Check: Go to Supabase > Table Editor > user_integrations
+- Should see 5 rows for demo user
 
 ### AI Agents Not Working
 
-1. "Failed to process query" error
-2. Common issues:
-   - Missing OPENAI_API_KEY in backend
-   - Invalid OpenAI API key
-   - OpenAI API rate limit exceeded
-
-### No Real Data Showing
-
-1. Mock data appears instead of real data
-2. Solution:
-   - Run DEMO_SETUP.sql in Supabase with real API keys
-   - Verify integrations in Supabase: `SELECT * FROM user_integrations WHERE user_id = 'YOUR_USER_ID'`
-   - Check backend logs for API errors
+- Issue: OpenAI API key missing or invalid
+- Fix: Check `OPENAI_API_KEY` in Railway environment variables
+- Verify: Key starts with `sk-proj-` and is valid
 
 ---
 
-## Part 8: Production Deployment Checklist
+## 📊 What Judges Will See
 
-Before sharing with judges:
+When judges login with the demo account, they'll see:
 
-- [ ] All environment variables configured in Railway and Vercel
-- [ ] Demo account created in Supabase with API keys
-- [ ] DEMO_CREDENTIALS.md updated with deployment URLs
-- [ ] Tested login with demo account
-- [ ] Verified all dashboard pages load
-- [ ] Confirmed AI agents work
-- [ ] Tested real-time updates
-- [ ] No console errors
-- [ ] Mobile responsive (test on phone)
+✅ **Live GitHub Data**
+- Real workflows from SmartOpsAgent repository
+- Deployment status
+- Pipeline health
 
----
+✅ **Real-time System Metrics**
+- CPU, Memory, Disk usage
+- Automatically updating every 30 seconds
+- Alerts sent to Discord/Slack
 
-## Part 9: Maintenance
+✅ **Web3 Network Monitoring**
+- Live Ethereum gas prices
+- Polygon network status
+- Real blockchain data
 
-### Updating the Application
+✅ **AI-Powered Insights**
+- 4 specialized ADK-TS agents
+- Natural language queries
+- Intelligent responses
 
-1. Make code changes locally
-2. Commit to GitHub:
-   ```bash
-   git add .
-   git commit -m "Update message"
-   git push origin main
-   ```
-3. Vercel and Railway auto-deploy from main branch
-
-### Monitoring
-
-- **Railway**: Dashboard > Metrics shows CPU, memory, requests
-- **Vercel**: Analytics tab shows page views, performance
-- **Supabase**: Database > Logs shows queries and errors
-
-### Costs
-
-All services offer free tiers sufficient for hackathon judging:
-- **Vercel**: 100GB bandwidth/month free
-- **Railway**: 500 hours/month free ($5 credit)
-- **Supabase**: 500MB database, 2GB bandwidth/month free
-- **OpenAI**: Pay-per-use (AI agent queries cost ~$0.01 each)
+✅ **Real-time Notifications**
+- Discord webhook integration
+- Slack webhook integration
+- Automatic alerts for high resource usage
 
 ---
 
-## Contact
+## 🎯 Hackathon Submission Requirements
 
-For deployment issues, check:
-- GitHub Issues: [Repository URL]
-- Documentation: README.md
-- Demo: DEMO_CREDENTIALS.md
+Make sure you have:
 
-**Deployment Status**: Ready for Judging
-**Last Updated**: 2025-10-22
+- [x] **Public GitHub Repo** - `github.com/henrysammarfo/SmartOpsAgent`
+- [ ] **Demo Video** - Record and upload (5 mins max)
+- [ ] **Live Demo Link** - Your Vercel URL
+- [ ] **Clear Use of ADK-TS** - Mentioned in README and shown in video
+
+---
+
+## ⏰ Time Estimates
+
+- **Creating demo account:** 5 minutes
+- **Adding API keys:** 5 minutes
+- **Deploying backend:** 10 minutes
+- **Deploying frontend:** 5 minutes
+- **Testing:** 5 minutes
+- **Recording video:** 30 minutes
+
+**Total: ~60 minutes to full deployment**
+
+---
+
+## 💡 Pro Tips
+
+1. **Test locally first** before deploying to ensure everything works
+2. **Record video locally** using the local version (faster, no network issues)
+3. **Keep credentials secure** - Don't commit API keys to GitHub
+4. **Monitor Railway logs** during deployment to catch issues early
+5. **Test the demo account** yourself before giving to judges
+
+---
+
+## 📞 Need Help?
+
+- Check backend logs in Railway
+- Check frontend logs in Vercel
+- Check browser console (F12) for frontend errors
+- Verify all environment variables are set correctly
+
+---
+
+**Good luck with your submission! 🚀**
+
+Last Updated: October 23, 2025
