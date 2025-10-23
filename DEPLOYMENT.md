@@ -2,6 +2,12 @@
 
 This guide covers deploying SmartOpsAgent to production using Railway (backend) and Vercel (frontend).
 
+## Current Deployment Status
+
+**Backend (Railway)**: Already deployed at https://smartopsagent-production.up.railway.app
+
+**Frontend (Vercel)**: Ready to deploy (follow Part 2 below)
+
 ## Prerequisites
 
 - GitHub account with SmartOpsAgent repository
@@ -75,12 +81,12 @@ SLACK_WEBHOOK_URL=your_slack_webhook
 
 ### Step 5: Verify Backend Deployment
 
-Test the backend health endpoint:
+Test the backend API endpoint (requires authentication):
 ```bash
-curl https://your-railway-url.railway.app/api/health
+curl https://smartopsagent-production.up.railway.app/api/metrics
 ```
 
-Should return: `{"status":"ok","timestamp":"..."}`
+Should return: `{"error":"No authorization header"}` (this confirms the backend is running and auth is working)
 
 ## Part 2: Deploy Frontend to Vercel
 
@@ -104,13 +110,13 @@ Should return: `{"status":"ok","timestamp":"..."}`
 In Vercel project settings → Environment Variables, add:
 
 ```
-# Backend API URL (from Railway)
-NEXT_PUBLIC_API_URL=https://your-railway-url.railway.app/api
-NEXT_PUBLIC_WS_URL=wss://your-railway-url.railway.app
+# Backend API URL (Railway - already deployed)
+NEXT_PUBLIC_API_URL=https://smartopsagent-production.up.railway.app/api
+NEXT_PUBLIC_WS_URL=wss://smartopsagent-production.up.railway.app
 
 # Supabase (Frontend)
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+NEXT_PUBLIC_SUPABASE_URL=https://wdmeqwveedkxiuzbalfq.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkbWVxd3ZlZWRreGl1emJhbGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4NTY1MzIsImV4cCI6MjA3NjQzMjUzMn0.kqaV0EoTs8GrU9ky9sEULIRH-8tiwbTd7O6K-Z3j2so
 ```
 
 ### Step 4: Deploy
