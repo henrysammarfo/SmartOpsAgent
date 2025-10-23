@@ -27,21 +27,17 @@ export default function DashboardPage() {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const [metricsData, deploymentsData] = await Promise.all([
+        const [metricsData, deploymentsData, metricHistory] = await Promise.all([
           apiClient.getInfrastructureMetrics(),
           apiClient.getDeployments(),
+          apiClient.getMetricHistory(),
         ])
 
         setMetrics(metricsData)
         setDeployments(deploymentsData.slice(0, 5))
 
-        // Generate chart data from metrics
-        const now = Date.now()
-        const generatedChartData = Array.from({ length: 24 }, (_, i) => ({
-          timestamp: new Date(now - (23 - i) * 3600000).toISOString(),
-          value: Math.random() * 100,
-        }))
-        setChartData(generatedChartData)
+        // Use REAL metric history data from API
+        setChartData(metricHistory || [])
       } catch (error) {
         console.error("[v0] Error fetching dashboard data:", error)
       } finally {

@@ -50,7 +50,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
 
   const connect = useCallback(() => {
     if (!isValidUrl(url)) {
-      console.log("[v0] WebSocket URL not configured, running in mock mode")
+      // Debug log removed
       setState((prev) => ({ ...prev, isConnected: false, isConnecting: false, error: null }))
       return
     }
@@ -63,7 +63,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       const ws = new WebSocket(url!)
 
       ws.onopen = () => {
-        console.log("[v0] WebSocket connected")
+        // Debug log removed
         setState({ isConnected: true, isConnecting: false, error: null, reconnectAttempts: 0 })
 
         // Start heartbeat
@@ -95,7 +95,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
       }
 
       ws.onclose = () => {
-        console.log("[v0] WebSocket disconnected")
+        // Debug log removed
         setState((prev) => ({ ...prev, isConnected: false, isConnecting: false }))
 
         if (heartbeatIntervalRef.current) {
