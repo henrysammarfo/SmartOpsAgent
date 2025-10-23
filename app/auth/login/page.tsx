@@ -42,6 +42,12 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center p-6 md:p-10 bg-background">
       <div className="w-full max-w-sm">
+        <div className="mb-4 rounded-lg border border-blue-500/50 bg-blue-500/10 p-4">
+          <p className="text-sm font-medium text-blue-400 mb-2">ADK-TS Hackathon 2025 Demo</p>
+          <p className="text-xs text-muted-foreground mb-1">Demo Credentials:</p>
+          <p className="text-sm font-mono">demo@smartopsagent.com</p>
+          <p className="text-sm font-mono">DemoPass2025!</p>
+        </div>
         <Card className="border-border/40 bg-card/50 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-2xl">Welcome back</CardTitle>

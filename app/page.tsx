@@ -55,6 +55,17 @@ export default function LandingPage() {
             </Button>
           </div>
 
+          <div className="mt-8 rounded-lg border border-blue-500/50 bg-blue-500/10 p-4 max-w-2xl">
+            <p className="text-sm font-medium text-blue-400 mb-2">ADK-TS Hackathon 2025 Demo</p>
+            <p className="text-sm text-muted-foreground mb-2">
+              Try SmartOpsAgent with pre-configured demo credentials:
+            </p>
+            <div className="flex flex-col gap-1 text-sm font-mono bg-background/50 rounded p-3">
+              <p>Email: demo@smartopsagent.com</p>
+              <p>Password: DemoPass2025!</p>
+            </div>
+          </div>
+
           {/* Live Metrics Preview */}
           <div className="mt-16 grid gap-4 sm:grid-cols-3">
             <div className="glass-card rounded-xl border border-border/50 p-6">
