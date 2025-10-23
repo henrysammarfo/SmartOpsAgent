@@ -1,4 +1,5 @@
 import WebSocket from "ws"
+import type { Server as HTTPServer } from "http"
 import { VercelMonitoringService } from "./vercel-service"
 import { SystemMonitoringService } from "./system-monitoring-service"
 import { GitHubService } from "./github-service"
@@ -16,13 +17,19 @@ export class WebSocketService {
   private notificationService: NotificationService
   private intervals: NodeJS.Timeout[] = []
 
-  constructor(port: number) {
-    this.wss = new WebSocket.Server({ port })
+  constructor(port: number, server?: HTTPServer) {
+    // If HTTP server provided, attach to it; otherwise create standalone WebSocket server
+    this.wss = server
+      ? new WebSocket.Server({ server })
+      : new WebSocket.Server({ port })
+
     this.vercelService = new VercelMonitoringService()
     this.systemService = new SystemMonitoringService()
     this.githubService = new GitHubService()
     this.web3Service = new Web3Service()
     this.notificationService = new NotificationService()
+
+    console.log(`WebSocket server ${server ? 'attached to HTTP server' : `running on port ${port}`}`)
 
     this.setupWebSocket()
     this.startDataStreaming()

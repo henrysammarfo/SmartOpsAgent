@@ -82,7 +82,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
             listeners.forEach((callback) => callback(data.payload))
           }
         } catch (error) {
-          console.error("[v0] Failed to parse WebSocket message:", error)
+          console.error("Failed to parse WebSocket message:", error)
         }
       }
 
@@ -104,7 +104,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
 
         if (autoConnect && state.reconnectAttempts < maxReconnectAttempts && isValidUrl(url)) {
           const delay = reconnectInterval * Math.pow(2, state.reconnectAttempts)
-          console.log(`[v0] Reconnecting in ${delay}ms...`)
+          console.log(`Reconnecting in ${delay}ms...`)
 
           reconnectTimeoutRef.current = setTimeout(() => {
             setState((prev) => ({ ...prev, reconnectAttempts: prev.reconnectAttempts + 1 }))
@@ -115,7 +115,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
 
       wsRef.current = ws
     } catch (error) {
-      console.error("[v0] Failed to create WebSocket:", error)
+      console.error("Failed to create WebSocket:", error)
       setState((prev) => ({
         ...prev,
         error: error as Error,
@@ -166,7 +166,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
     if (wsRef.current?.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify({ type, payload }))
     } else {
-      console.warn("[v0] WebSocket not connected, using mock data")
+      console.warn("WebSocket not connected, using mock data")
     }
   }, [])
 
