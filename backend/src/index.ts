@@ -8,8 +8,15 @@ import { WebSocketService } from "./services/websocket-service"
 
 const app = express()
 
-// Middleware
-app.use(cors())
+// Middleware - Enable CORS for Vercel frontend
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3003',
+    'https://smart-ops-agent.vercel.app'
+  ],
+  credentials: true
+}))
 app.use(express.json())
 
 // Routes
