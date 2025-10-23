@@ -2,6 +2,9 @@
 
 import { Bell, Search, User, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -18,14 +21,38 @@ import { useWebSocket } from "@/hooks/use-websocket"
 export function TopNav() {
   const { theme, setTheme } = useTheme()
   const { isConnected, isConnecting } = useWebSocket({ autoConnect: false })
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/auth/login")
+    router.refresh()
+  }
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      // Search functionality - could navigate to a search results page
+      // For now, we'll just log it (you can enhance this later)
+      console.log("Searching for:", searchQuery)
+    }
+  }
 
   return (
     <header className="glass-nav sticky top-0 z-30 flex h-16 items-center justify-between px-6">
       <div className="flex flex-1 items-center gap-4">
-        <div className="relative w-96">
+        <form onSubmit={handleSearch} className="relative w-96">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input type="search" placeholder="Search metrics, alerts, deployments..." className="pl-10" />
-        </div>
+          <Input
+            type="search"
+            placeholder="Search metrics, alerts, deployments..."
+            className="pl-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </form>
       </div>
 
       <div className="flex items-center gap-2">
@@ -91,11 +118,13 @@ export function TopNav() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Team Settings</DropdownMenuItem>
-            <DropdownMenuItem>Preferences</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>Team Settings</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>Preferences</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+              Log out
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
