@@ -4,9 +4,11 @@ This guide covers deploying SmartOpsAgent to production using Railway (backend) 
 
 ## Current Deployment Status
 
-**Backend (Railway)**: Already deployed at https://smartopsagent-production.up.railway.app
+**Backend (Railway)**: ✅ Live at https://smartopsagent-production.up.railway.app
 
-**Frontend (Vercel)**: Ready to deploy (follow Part 2 below)
+**Frontend (Vercel)**: ✅ Live at https://smart-ops-agent.vercel.app
+
+**Demo Account**: demo@smartopsagent.com / DemoPass2025!
 
 ## Prerequisites
 

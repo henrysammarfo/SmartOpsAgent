@@ -20,13 +20,16 @@ SmartOpsAgent is an intelligent, multi-tenant DevOps monitoring platform built w
 
 ## Demo
 
-**Live Demo**: [Coming Soon - Deployment in Progress]
-
-**Demo Video**: [Watch on YouTube](YOUR_YOUTUBE_LINK_HERE)
+**Live Demo**: [https://smart-ops-agent.vercel.app](https://smart-ops-agent.vercel.app)
 
 **Demo Credentials**:
 - Email: `demo@smartopsagent.com`
 - Password: `DemoPass2025!`
+
+**Production Infrastructure**:
+- Frontend: Vercel (https://smart-ops-agent.vercel.app)
+- Backend API: Railway (https://smartopsagent-production.up.railway.app)
+- Database: Supabase (PostgreSQL)
 
 ## Architecture
 
